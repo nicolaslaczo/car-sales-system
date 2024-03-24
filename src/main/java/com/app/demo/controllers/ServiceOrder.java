@@ -1,7 +1,9 @@
 package com.app.demo.controllers;
 
+import com.app.demo.entity.Customer;
 import com.app.demo.entity.Part;
 import com.app.demo.entity.Vehicle;
+import com.app.demo.services.CustomerService;
 import com.app.demo.services.PartService;
 import com.app.demo.services.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Iterator;
 import java.util.List;
 
 @RestController
@@ -18,6 +21,9 @@ public class ServiceOrder {
     private PartService partService;
     @Autowired
     private VehicleService vehicleService;
+
+    @Autowired
+    private CustomerService customerService;
 
 
     // ----------- Parts controllers -------------- //
@@ -85,6 +91,34 @@ public class ServiceOrder {
     @DeleteMapping("/service/vehicles/{plateNum}")
     public ResponseEntity<HttpStatus> deleteVehicleByPlateNum(@PathVariable String plateNum) {
         vehicleService.deleteVehicleByPlateNum(plateNum);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    // ------------- Customer controllers ------------- //
+    @PostMapping("/service/customers")
+    public ResponseEntity<HttpStatus> addNewCustomer(@RequestBody Customer customer) {
+        customerService.addNewCustomer(customer);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/service/customers")
+    public ResponseEntity<List<Customer>>getAllCustomers() {
+
+        return new ResponseEntity<>(customerService.getAllCustomers(),HttpStatus.OK);
+    }
+
+    @DeleteMapping("/service/customers/{customerId}")
+    public ResponseEntity<HttpStatus> deleteCustomerById(@PathVariable Integer customerId) {
+        customerService.deleteCustomerById(customerId);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/service/customers/{customerId}")
+    public ResponseEntity<HttpStatus> updateCustomerParameters(@PathVariable Integer customerId,@RequestBody Customer customer) {
+        customerService.updateCustomerParameters(customerId,customer);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
