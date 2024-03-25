@@ -1,18 +1,18 @@
 package com.app.demo.controllers;
 
 import com.app.demo.entity.Customer;
+import com.app.demo.entity.Orders;
 import com.app.demo.entity.Part;
 import com.app.demo.entity.Vehicle;
 import com.app.demo.services.CustomerService;
+import com.app.demo.services.OrderService;
 import com.app.demo.services.PartService;
 import com.app.demo.services.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Iterator;
 import java.util.List;
 
 @RestController
@@ -24,6 +24,9 @@ public class ServiceOrder {
 
     @Autowired
     private CustomerService customerService;
+
+    @Autowired
+    private OrderService orderService;
 
 
     // ----------- Parts controllers -------------- //
@@ -122,6 +125,21 @@ public class ServiceOrder {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+
+    // ----------------------- Order operations ------------------ //
+
+    @PostMapping("/service/serviceOrders")
+    public ResponseEntity<HttpStatus> createServiceOrder(@RequestBody Orders orders) {
+        orderService.createServiceOrder(orders);
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+
+
+
+
 
 
 
