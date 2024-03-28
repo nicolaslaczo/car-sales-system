@@ -19,6 +19,8 @@ public class Part {
     private String partNum;
     private String partName;
     private String partPrice;
-    private Integer quantity;
+
+
+
 
 }

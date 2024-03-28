@@ -9,6 +9,7 @@ import lombok.*;
 @Setter
 @EqualsAndHashCode
 @Entity
+@ToString
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,4 +17,6 @@ public class Customer {
     private String firstName;
     private String lastName;
     private String email;
+
+
 }

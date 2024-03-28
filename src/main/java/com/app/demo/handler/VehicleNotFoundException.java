@@ -6,5 +6,9 @@ public class VehicleNotFoundException extends RuntimeException{
         super("Vehicle with " + partNum + "not found in database");
     }
 
+    public VehicleNotFoundException(Integer vehicleId) {
+        super("Vehicle with id " + vehicleId + " not found");
+    }
+
 
 }

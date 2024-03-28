@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -21,7 +22,7 @@ public class Orders {
 
     private String orderName;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
@@ -29,11 +30,11 @@ public class Orders {
     @JoinColumn(name = "vehicle_id")
     private Vehicle vehicle;
 
-    @OneToMany
-    @JoinColumn(name = "order_id")
-    private List<Part> parts;
+
 
     private Integer totalPrice;
+
+
 
 
 
