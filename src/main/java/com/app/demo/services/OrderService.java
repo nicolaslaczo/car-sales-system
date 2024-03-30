@@ -24,8 +24,9 @@ public class OrderService {
     @Autowired
     private PartRepository partRepository;
 
+
     @Autowired
-    OrderHasPartsRepository orderHasPartsRepository;
+    private OrderHasPartsRepository orderHasPartsRepository;
 
 
     public void createServiceOrder(Orders orders) {
@@ -104,27 +105,50 @@ public class OrderService {
 
     // ------------------------ Parts to order  ------------------------- //
 
-    public void addPartToOrderFromDb(Integer orderId,String partNum) {
+    public void addPartToOrderFromDb(Integer orderId, String partNum) {
         Orders existingOrder = orderRepository.findById(orderId)
                 .orElseThrow(() -> new OrderNotFoundException(orderId));
 
         Part existingPart = partRepository.findByPartNum(partNum);
-        if (existingPart != null){
-            OrderHasParts orderHasParts = new OrderHasParts();
-            orderHasParts.setOrders(existingOrder);
-            orderHasParts.setParts(existingPart);
-            orderHasPartsRepository.save(orderHasParts);
+        if (existingPart != null) {
+            OrderHasParts orderHasParts = orderHasPartsRepository.findByOrdersIdAndPartsPartNum(orderId, partNum);
+            if (orderHasParts != null) {
+                orderHasParts.setQuantity(orderHasParts.getQuantity() + 1); // Zvýšime quantity o 1
+                orderHasPartsRepository.save(orderHasParts);
+            } else {
+                orderHasParts = new OrderHasParts();
+                orderHasParts.setOrders(existingOrder);
+                orderHasParts.setParts(existingPart);
+                orderHasParts.setQuantity(1); // Nová položka, takže nastavíme quantity na 1
+                orderHasPartsRepository.save(orderHasParts);
+            }
 
+            if (existingPart.getQuantity() > 0) {
+                existingPart.decreaseQuantity();
+                partRepository.save(existingPart);
+            } else {
+                throw new PartNotFoundException(partNum);
+            }
         } else {
             throw new PartNotFoundException(partNum);
         }
-
     }
+
 
     public List<Part> getPartsFromOrder(Integer orderId) {
         return orderHasPartsRepository.findByOrdersId(orderId);
 
     }
+
+    public Integer calculateTotalPartsCostByOrderId(Integer orderId) {
+        return orderHasPartsRepository.sumPartCostByOrdersId(orderId);
+    }
+
+
+
+
+
+
 
 
 

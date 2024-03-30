@@ -19,6 +19,20 @@ public class Part {
     private String partNum;
     private String partName;
     private String partPrice;
+    private Integer quantity;
+
+
+
+    public void increaseQuantity() {
+        quantity = quantity+1;
+    }
+
+    public void decreaseQuantity() {
+        quantity = quantity -1;
+    }
+
+
+
 
 
 

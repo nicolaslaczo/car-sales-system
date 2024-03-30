@@ -29,7 +29,13 @@ public class PartService {
     }
 
     public void addPartToStorage(Part part) {
-        partRepository.save(part);
+       Part existingPart = partRepository.findByPartNum(part.getPartNum());
+       if (existingPart != null) {
+           existingPart.increaseQuantity();
+           partRepository.save(existingPart);
+       } else {
+           partRepository.save(part);
+       }
     }
 
     public void deletePartByPartNum(String partNum) {

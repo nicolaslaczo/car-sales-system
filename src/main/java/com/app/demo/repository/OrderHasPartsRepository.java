@@ -11,8 +11,17 @@ public interface OrderHasPartsRepository extends JpaRepository<OrderHasParts,Int
     @Query("SELECT op.parts FROM OrderHasParts op WHERE op.orders.id = :orderId")
     List<Part> findByOrdersId(Integer orderId);
 
-    List<Part> findAllPartsByOrdersId(Integer orderId);
 
+    OrderHasParts findByOrdersIdAndPartsPartNum(Integer orderId,String partNum);
+
+
+
+
+    @Query("SELECT op.parts FROM OrderHasParts op WHERE op.orders.id = :orderId")
+    List<Part> findPartsByOrderId(Integer orderId);
+
+    @Query("SELECT SUM(ohp.quantity * CAST(ohp.parts.partPrice AS int)) FROM OrderHasParts ohp WHERE ohp.orders.id = :orderId")
+    Integer sumPartCostByOrdersId(Integer orderId);
 
 
 

@@ -220,6 +220,14 @@ public class ServiceOrder {
         return ResponseEntity.ok(orderService.getPartsFromOrder(orderId));
     }
 
+    @GetMapping("service/order/{orderId}/getPartsPrice")
+    public ResponseEntity<Integer>getPartsPrice(@PathVariable Integer orderId) {
+
+        return ResponseEntity.ok(orderService.calculateTotalPartsCostByOrderId(orderId));
+    }
+
+
+
 
 
 
